@@ -3,25 +3,18 @@ require_once 'Database.php';
 
 $db = new Database();
 
-$played_games = null;
-foreach ($db->getReviews() as $key => $value) {
-    $played_games[] = [
-        "game" => $value->getGame()->getTitle(),
-        "genres" => $value->getGame()->getGenres(),
-        "rating" => $value->getAssessment()
-    ];
-}
-
 //Жанр, по которому ведется поиск
 $searched_genre = $argv[1];
 
-//Массив отфильтрованных по жанру игр
-$games_in_genre = array_filter($played_games, function ($v, $k) use ($searched_genre) {
-    $genres = array_column($v['genres'], 'title');
-    if (array_intersect(array($searched_genre), $genres))
-        return true;
-    return false;
-}, ARRAY_FILTER_USE_BOTH);
+$games_in_genre = null;
+foreach ($db->getReviews() as $key => $value) {
+    if (array_search($searched_genre, $value->getGame()->getGenres()) !== false) {
+        $games_in_genre[] = [
+            "game" => $value->getGame()->getTitle(),
+            "rating" => $value->getAssessment()
+        ];
+    }
+}
 
 //Сортировка по столбцу с ключем rating
 $rating = array_column($games_in_genre, 'rating');
