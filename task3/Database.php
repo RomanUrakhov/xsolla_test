@@ -64,7 +64,7 @@ class Database
                 array($this->genres[2]),
                 date("2012-11-30")),
 
-            new Game("Far Cry Primal",
+            new Game("Far Cry: Primal",
                 "The game is set in the Stone Age, and revolves around the story of Takkar, who starts off as
                  an unarmed hunter and rises to become the leader of a tribe.",
                 $this->developers[0],
